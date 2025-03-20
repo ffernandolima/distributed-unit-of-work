@@ -1,0 +1,28 @@
+﻿services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      - POSTGRES_PASSWORD=YourStrong!Passw0rd
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=testdb
+    ports:
+      - "5432:5432"
+    command: ["postgres", "-c", "max_prepared_transactions=100"]
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
