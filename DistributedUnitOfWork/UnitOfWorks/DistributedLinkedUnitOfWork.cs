@@ -2,6 +2,7 @@
 using DistributedUnitOfWork.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -17,7 +18,7 @@ public class DistributedLinkedUnitOfWork : IUnitOfWork
     private TransactionScope _transactionScope;
 
     /// <inheritdoc/>
-    public bool InTransaction => _transactionScope is not null;
+    public bool InTransaction => _transactionScope is not null || _unitsOfWork.Any(uow => uow.InTransaction);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DistributedLinkedUnitOfWork"/> class.
